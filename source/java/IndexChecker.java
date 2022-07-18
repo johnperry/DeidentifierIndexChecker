@@ -84,7 +84,7 @@ public class IndexChecker extends Thread {
 					int count = 0;
 					int errorCount = 0;
 					int nullCount = 0;
-					String key = "notnull";
+					String key = "?";
 					while (key != null) {
 						try {
 							key = (String)fit.next();
@@ -110,13 +110,16 @@ public class IndexChecker extends Thread {
 							errorCount++;
 							String msg = null;
 							if (x instanceof Exception) {
-								msg = "Exception "+errorCount+" / "+count + ": "+x.getMessage();
+								msg = "Exception "+errorCount+" / "+count + ": "+key+": "+x.getMessage();
 							}
 							else if (x instanceof Error) {
-								msg = "Error "+errorCount+" / "+count + ": "+x.getMessage();
+								msg = "Error "+errorCount+" / "+count + ": "+key+": "+x.getMessage();
 							}
 							cp.println(msg);
 							System.out.println(msg);
+							StringWriter sw = new StringWriter();
+							x.printStackTrace(new PrintWriter(sw));
+							cp.println(Color.red, x.toString());
 							key = "notnull";
 						}
 					}
