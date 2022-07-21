@@ -149,9 +149,9 @@ public class DeidentifierIndexChecker extends JFrame implements ActionListener {
 			add(Box.createHorizontalStrut(15));
 			add(checkIndex);
 			add(Box.createHorizontalGlue());
-			add(listTables);
 			add(Box.createHorizontalStrut(15));
 			add(listIntegers);
+			add(listTables);
 			add(Box.createHorizontalStrut(15));
 			add(makeBackup);
 			add(Box.createHorizontalStrut(15));

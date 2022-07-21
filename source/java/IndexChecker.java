@@ -21,6 +21,8 @@ import jdbm.RecordManager;
 import jdbm.htree.HTree;
 import jdbm.helper.FastIterator;
 
+import org.jp.deidentifier.StudyIndexEntry;
+
 /**
  * A Thread for checking/fixing the Index.
  */
@@ -92,7 +94,12 @@ public class IndexChecker extends Thread {
 								Object value = tableOriginal.get(key);
 								if (value != null) {
 									count++;
-									String text = count + ": " + key + ": " + value;
+									String s = value.toString();
+									if (value instanceof StudyIndexEntry) {
+										StudyIndexEntry sie = (StudyIndexEntry)value;
+										s = "[" + sie.studies.size() + "]";
+									}
+									String text = count + ": " + key + ": " + s;
 									if (listAll) cp.println(text);
 									showSTS(text);
 									if (recmanBackup != null) {
