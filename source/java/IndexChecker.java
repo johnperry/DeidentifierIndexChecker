@@ -65,7 +65,7 @@ public class IndexChecker extends Thread {
 				new File(data, "index-backup.db").delete();
 				new File(data, "index-backup.lg").delete();
 				//Now create the new one
-				File indexBackup = new File(data, "index-backup");
+				File indexBackup = new File(data, "index-filtered");
 				recmanBackup = JdbmUtil.getRecordManager( indexBackup.getAbsolutePath() );
 			}
 			

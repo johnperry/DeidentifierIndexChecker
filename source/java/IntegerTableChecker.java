@@ -62,7 +62,7 @@ public class IntegerTableChecker extends Thread {
 				new File(data, "integers-backup.db").delete();
 				new File(data, "integers-backup.lg").delete();
 				//Now create the new one
-				File integerTableBackup = new File(data, "integers-backup");
+				File integerTableBackup = new File(data, "integers-filtered");
 				recmanBackup = JdbmUtil.getRecordManager( integerTableBackup.getAbsolutePath() );
 				tableBackup = JdbmUtil.getHTree( recmanBackup, "index" );
 				if (tableBackup == null) {
