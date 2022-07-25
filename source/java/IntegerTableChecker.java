@@ -75,12 +75,14 @@ public class IntegerTableChecker extends Thread {
 
 			//First, list the next keys
 			FastIterator fit = tableOriginal.keys();
+			Integer lastPtID = Integer.valueOf(0);
 			try {
 				cp.println("Checking special keys:");
 				String key;
 				while ( (key = (String)fit.next()) != null ) {
 					Object value = tableOriginal.get(key);
 					if (key.startsWith("__") && key.endsWith("__")) cp.println(key+" : "+value);
+					if (key.equals("__\"ptid\"__")) lastPtID = (Integer)value;
 				}
 			}
 			catch (Exception ex) {
@@ -88,6 +90,28 @@ public class IntegerTableChecker extends Thread {
 				ex.printStackTrace(new PrintWriter(sw));
 				cp.println(Color.red, sw.toString());
 			}
+			cp.println("lastPtID = "+lastPtID);
+			
+			//Next, look for duplicate values
+			cp.println("\nChecking for duplicate ptid values:");
+			boolean ok = true;
+			Hashtable<Integer,String> invtbl = new Hashtable<Integer,String>();
+			fit = tableOriginal.keys();
+			for (String key=(String)fit.next(); key!=null; key=(String)fit.next()) {
+				if (key.startsWith("\"ptid\"")) {
+					Integer i = (Integer)tableOriginal.get(key);
+					String v = invtbl.get(i);
+					if (v == null) invtbl.put(i, key);
+					else {
+						cp.println("Duplicate ptid value: "+key+" : "+ v + " ["+i+"]");
+						ok = false;
+					}
+					if (i.intValue() > lastPtID.intValue()) {
+						cp.println(key + " : " + i + " > "+lastPtID);
+					}
+				}
+			}
+			if (ok) cp.println("No duplicates found");
 			
 			//Now test all the keys
 			cp.println("\nChecking all keys:");
